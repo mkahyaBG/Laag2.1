@@ -179,6 +179,31 @@
     .verdict-grid { grid-template-columns: 1fr; }
     .results-hero { flex-direction: column; align-items: flex-start; }
   }
+
+/* ── TOEGANGSMUUR ── */
+#screen-gate{max-width:520px;margin:0 auto;padding:100px 48px 80px;text-align:center;}
+.gate-icon{width:72px;height:72px;background:var(--accent-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 32px;font-size:1.8rem;}
+.gate-title{font-family:'Switzer',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em;line-height:1.15;margin-bottom:12px;}
+.gate-title em{font-style:normal;color:var(--accent-dark);}
+.gate-sub{font-size:.95rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:36px;}
+.gate-input-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.gate-input{font-family:'Switzer',sans-serif;font-size:1.1rem;text-align:center;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);background:var(--white);border:1.5px solid rgba(13,13,13,.18);border-radius:6px;padding:16px 20px;width:100%;outline:none;transition:border-color .2s;}
+.gate-input:focus{border-color:var(--accent-dark);}
+.gate-input.error{border-color:var(--red);}
+.gate-code-error{font-size:.82rem;color:var(--red);display:none;text-align:center;}
+.gate-code-error.visible{display:block;}
+.gate-submit{width:100%;justify-content:center;background:var(--ink);color:var(--white);font-family:'Switzer',sans-serif;font-size:1rem;font-weight:500;padding:18px 32px;border:none;border-radius:6px;cursor:pointer;transition:all .25s ease;display:flex;align-items:center;}
+.gate-submit:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 12px 30px rgba(133,133,204,.35);}
+.gate-submit:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none;}
+.resume-notice{background:var(--accent-light);border:1.5px solid var(--accent);border-radius:8px;padding:18px 20px;margin-bottom:24px;display:none;}
+.resume-notice.visible{display:block;}
+.resume-notice-title{font-weight:600;font-size:.95rem;color:var(--accent-dark);margin-bottom:6px;}
+.resume-notice-text{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.resume-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-resume{background:var(--accent-dark);color:white;font-family:'Switzer',sans-serif;font-size:.88rem;font-weight:600;padding:10px 20px;border:none;border-radius:4px;cursor:pointer;transition:all .2s;}
+.btn-resume-new{background:none;border:1.5px solid var(--border);color:var(--muted);font-family:'Switzer',sans-serif;font-size:.88rem;padding:10px 20px;border-radius:4px;cursor:pointer;transition:all .2s;}
+.btn-resume-new:hover{border-color:var(--ink);color:var(--ink);}
+.gate-privacy{font-size:.72rem;color:var(--muted);margin-top:14px;line-height:1.6;font-weight:300;}
 </style>
 </head>
 <body>
@@ -186,13 +211,34 @@
 <header>
   <div class="logo">
     <span class="logo-dot"></span>
-    B1 Quickscan AI &amp; Data
+    AI &amp; Data Assessment
   </div>
   <img src="https://www.bg.legal/logo.svg" alt="Logo van BG.legal" width="180">
 </header>
 
+<!-- TOEGANGSMUUR -->
+<div id="screen-gate" class="screen active">
+  <div class="gate-icon">🔐</div>
+  <div class="gate-title">Welkom bij het <em>AI &amp; Data Assessment</em></div>
+  <p class="gate-sub">Dit assessment is uitsluitend toegankelijk voor BG.legal cliënten. Voer uw persoonlijke toegangscode in om te beginnen.</p>
+  <div class="resume-notice" id="resume-notice">
+    <div class="resume-notice-title">U heeft dit assessment eerder begonnen</div>
+    <div class="resume-notice-text" id="resume-notice-text">Wilt u verdergaan waar u gebleven was, of opnieuw beginnen?</div>
+    <div class="resume-btns">
+      <button class="btn-resume" onclick="resumeSession()">Verdergaan →</button>
+      <button class="btn-resume-new" onclick="startFresh()">Opnieuw beginnen</button>
+    </div>
+  </div>
+  <div class="gate-input-wrap">
+    <input type="text" id="gate-code-input" class="gate-input" placeholder="BGL-0000-000" maxlength="20" autocomplete="off" oninput="clearGateInputError()" onkeydown="if(event.key==='Enter')submitCode()"/>
+    <div class="gate-code-error" id="gate-code-error">Ongeldige code. Controleer de code en probeer het opnieuw.</div>
+    <button class="gate-submit" id="gate-submit-btn" onclick="submitCode()">Toegang →</button>
+  </div>
+  <p class="gate-privacy">🔒 Uw code is persoonlijk en mag niet worden gedeeld. Gegevens worden veilig opgeslagen in de EU conform de AVG.</p>
+</div>
+
 <!-- INTRO -->
-<div id="screen-intro" class="screen active">
+<div id="screen-intro" class="screen">
   <h1>Beoordeel uw project op <em>AI &amp; Data-regelgeving</em>.</h1>
   <p class="hero-sub">Een geïntegreerd assessment op basis van de aangeleverde modules voor AI Act, AVG, Data Act, DGA, MDR, NIS2, CRA, EAA, IE-rechten en contractuele verplichtingen.</p>
   <div class="meta-row">
@@ -302,7 +348,7 @@
       <p>Plan een gesprek met BG.legal om de uitkomsten om te zetten in een concreet compliance-plan.</p>
     </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <button class="btn-cta" onclick="window.open('mailto:info@bg.legal?subject=B1 Quickscan AI & Data','_blank')">Neem contact op →</button>
+      <button class="btn-cta" onclick="window.open('mailto:info@bg.legal?subject=AI & Data Assessment','_blank')">Neem contact op →</button>
       <button class="btn-restart" onclick="restartAssessment()">Opnieuw beginnen</button>
     </div>
   </div>
@@ -310,6 +356,154 @@
   <p class="disclaimer">⚠️ Disclaimer. Dit rapport is een oriënterend instrument op basis van de door de invuller verstrekte informatie. De uitkomsten zijn indicatief en vormen geen juridisch advies. BG.legal aanvaardt geen aansprakelijkheid voor beslissingen die uitsluitend op dit rapport worden gebaseerd. Raadpleeg een gekwalificeerde jurist voor specifiek juridisch advies.</p>
 </div>
 
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/api/env" defer></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// SUPABASE & TOEGANGSMUUR — AI & Data Assessment (LAAG 2.1)
+// ═══════════════════════════════════════════════════════════
+let _supa = null;
+
+function initSupabase() {
+  const url = window.__ENV_SUPABASE_URL__;
+  const key = window.__ENV_SUPABASE_ANON_KEY__;
+  if (url && key && window.supabase) {
+    _supa = window.supabase.createClient(url, key);
+  }
+}
+
+// Actieve sessievariabelen
+let activeCode = '';
+let sessionId = null;
+let existingSession = null;
+
+// ── INVOERVELD FOUT WISSEN ──
+function clearGateInputError() {
+  document.getElementById('gate-code-error').classList.remove('visible');
+  document.getElementById('gate-code-input').classList.remove('error');
+}
+
+// ── CODE INDIENEN ──
+async function submitCode() {
+  const rawInput = document.getElementById('gate-code-input').value.trim().toUpperCase();
+  if (!rawInput) return;
+  const btn = document.getElementById('gate-submit-btn');
+  btn.disabled = true; btn.textContent = 'Controleren…';
+
+  try {
+    const { data: codeRow, error } = await _supa
+      .from('access_codes')
+      .select('code, is_active, client_name')
+      .eq('code', rawInput)
+      .single();
+
+    if (error || !codeRow || !codeRow.is_active) {
+      document.getElementById('gate-code-error').textContent = 'Ongeldige of inactieve code. Controleer uw code en probeer het opnieuw.';
+      document.getElementById('gate-code-error').classList.add('visible');
+      document.getElementById('gate-code-input').classList.add('error');
+      btn.disabled = false; btn.textContent = 'Toegang →';
+      return;
+    }
+
+    activeCode = rawInput;
+
+    // Controleer of er al een sessie bestaat voor deze code
+    const { data: sessions } = await _supa
+      .from('assessment_sessions')
+      .select('*')
+      .eq('access_code', rawInput)
+      .eq('status', 'in_progress')
+      .order('updated_at', { ascending: false })
+      .limit(1);
+
+    if (sessions && sessions.length > 0) {
+      existingSession = sessions[0];
+      showResumeNotice(sessions[0]);
+    } else {
+      existingSession = null;
+      proceedToIntro();
+    }
+  } catch (e) {
+    document.getElementById('gate-code-error').textContent = 'Er ging iets mis. Probeer het opnieuw of neem contact op met BG.legal.';
+    document.getElementById('gate-code-error').classList.add('visible');
+  }
+  btn.disabled = false; btn.textContent = 'Toegang →';
+}
+
+// ── HERVATTINGSMELDING TONEN ──
+function showResumeNotice(session) {
+  const notice = document.getElementById('resume-notice');
+  const updated = new Date(session.updated_at).toLocaleDateString('nl-NL', {
+    day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+  document.getElementById('resume-notice-text').textContent =
+    'Uw laatste voortgang is opgeslagen op ' + updated + '. Wilt u verdergaan of opnieuw beginnen?';
+  notice.classList.add('visible');
+  document.getElementById('gate-code-input').disabled = true;
+  document.getElementById('gate-submit-btn').style.display = 'none';
+}
+
+// ── SESSIE HERVATTEN ──
+function resumeSession() {
+  if (!existingSession) return;
+  sessionId = existingSession.id;
+  answers = existingSession.answers || {};
+  idData = existingSession.identification || {};
+  currentIdx = existingSession.current_index || 0;
+  history = [];
+  showScreen('screen-question');
+  renderQ();
+}
+
+// ── OPNIEUW BEGINNEN ──
+function startFresh() {
+  existingSession = null;
+  document.getElementById('resume-notice').classList.remove('visible');
+  document.getElementById('gate-code-input').disabled = false;
+  document.getElementById('gate-submit-btn').style.display = 'flex';
+  document.getElementById('gate-submit-btn').disabled = false;
+  document.getElementById('gate-submit-btn').textContent = 'Toegang →';
+  clearGateInputError();
+  proceedToIntro();
+}
+
+function proceedToIntro() {
+  showScreen('screen-intro');
+}
+
+// ── VOORTGANG OPSLAAN ──
+async function saveProgress() {
+  if (!_supa || !activeCode) return;
+  const payload = {
+    access_code: activeCode,
+    answers: answers,
+    identification: idData,
+    current_index: currentIdx,
+    status: 'in_progress',
+    updated_at: new Date().toISOString()
+  };
+  if (sessionId) {
+    await _supa.from('assessment_sessions').update(payload).eq('id', sessionId);
+  } else {
+    const { data } = await _supa.from('assessment_sessions').insert(payload).select().single();
+    if (data) sessionId = data.id;
+  }
+}
+
+// ── SESSIE AFSLUITEN ──
+async function markComplete() {
+  if (!_supa || !sessionId) return;
+  await _supa.from('assessment_sessions').update({
+    status: 'completed',
+    completed_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    answers: answers,
+    identification: idData
+  }).eq('id', sessionId);
+}
+</script>
 <script id="assessment-data" type="application/json">{
   "modules": {
     "m1": {"id":"m1","title":"Module 1 — EU AI Act","short":"EU AI Act"},
@@ -530,11 +724,14 @@ const DATA=JSON.parse(document.getElementById('assessment-data').textContent);
 const MODULES=DATA.modules;
 const QUESTIONS=DATA.questions;
 let answers={}, currentIdx=0, history=[], idData={}, userEmail='';
+// Toegangsmuur variabelen (worden gezet door Supabase blok hierboven)
+// activeCode, sessionId, existingSession worden gedeclareerd in het Supabase blok
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function showIdentification(){showScreen('screen-identification');}
 
 function init(){
+  setTimeout(initSupabase, 100);
   const mg=document.getElementById('module-grid');
   mg.innerHTML=Object.values(MODULES).map(m=>
     '<span class="tag">'+esc(m.short)+'</span>'
@@ -547,6 +744,7 @@ function startAssessment(){
   idData={org,country:id('id_country').value.trim(),name:id('id_name').value.trim(),role:id('id_role').value.trim(),email,project:id('id_project').value.trim(),desc:id('id_desc').value.trim()};
   answers={};history=[];currentIdx=0;
   showScreen('screen-question');renderQ();
+  saveProgress();
 }
 
 function id(x){return document.getElementById(x);}
@@ -598,6 +796,7 @@ function selectOpt(q,opt){
       cur=cur.includes(opt.value)?cur.filter(v=>v!==opt.value):[...cur,opt.value];
     }
     answers[q.id]=cur;
+    saveProgress();
   } else {
     answers[q.id]=opt.value;
     setTimeout(()=>{
@@ -620,7 +819,7 @@ function nextQ(){
   if(q.type==='multi'&&(!Array.isArray(v)||!v.length))return;
   if(q.type!=='multi'&&!v)return;
   history.push(currentIdx);
-  if(currentIdx<getVisible().length-1){currentIdx++;renderQ();}else showEmailScreen();
+  if(currentIdx<getVisible().length-1){currentIdx++;saveProgress();renderQ();}else showEmailScreen();
 }
 
 function prevQ(){if(history.length){currentIdx=history.pop();renderQ();}}
@@ -634,7 +833,52 @@ function clearGateError(){id('gate-error').classList.remove('visible');id('gate-
 function submitGate(){
   const e=id('gate-email').value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){id('gate-email').classList.add('error');id('gate-error').classList.add('visible');return;}
-  userEmail=e;showScreen('screen-results');renderResults();
+  userEmail=e;
+  const btn=id('btn-gate-submit');
+  btn.disabled=true;btn.textContent='Rapport genereren…';
+  markComplete();
+  sendEmails(e, buildReportText())
+    .then(()=>{btn.textContent='Rapport verzonden ✓';setTimeout(()=>{showScreen('screen-results');renderResults();},700);})
+    .catch(()=>{showScreen('screen-results');renderResults();});
+}
+
+async function sendEmails(toEmail, reportText) {
+  // Verstuurt rapport via Scalingo server met PDF bijlage en BCC naar noreply@bg.legal
+  let pdfBase64 = null;
+  try { pdfBase64 = buildPDFBase64(); } catch(e) { console.warn('PDF fout:', e.message); }
+
+  const response = await fetch('/api/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: toEmail,
+      recipientName: idData.name || '',
+      orgName: idData.org || '',
+      appName: idData.project || '',
+      toolName: 'AI & Data Assessment',
+      reportText: reportText,
+      pdfBase64: pdfBase64,
+    }),
+  });
+  if (!response.ok) throw new Error('E-mail mislukt');
+  return response.json();
+}
+
+function buildReportText(){
+  const lines=[];
+  const d=new Date().toLocaleDateString('nl-NL');
+  lines.push('B1 QUICKSCAN AI & DATA — RAPPORT','');
+  lines.push('Organisatie: '+(idData.org||''),'Project: '+(idData.project||''),'Invuller: '+(idData.name||''),'E-mail: '+(userEmail||idData.email||''),'Datum: '+d,'');
+  lines.push('BESCHRIJVING',idData.desc||'','');
+  lines.push('SAMENVATTING PER MODULE');
+  moduleStats().forEach(s=>lines.push(MODULES[s.m].title+': '+s.answered+'/'+s.total+' beantwoord, '+s.flags.length+' aandachtspunt(en)'));
+  lines.push('','RODE VLAGGEN');
+  const flags=computeFlags();
+  if(!flags.length) lines.push('Geen rode vlaggen geïdentificeerd.');
+  flags.forEach((f,i)=>lines.push((i+1)+'. ['+f.level.toUpperCase()+'] '+f.module+' — '+f.name+' — '+f.desc));
+  lines.push('','ANTWOORDEN');
+  QUESTIONS.forEach(q=>lines.push(q.qid+' '+q.text+'\nAntwoord: '+(answerText(q)||'Niet beantwoord')));
+  return lines.join('\n');
 }
 
 function severityFor(label){
@@ -753,7 +997,72 @@ function buildReportText(){
   return lines.join('\n');
 }
 
+function buildPDFBase64(){
+  // Bouw de PDF en geef hem terug als base64 string voor e-mail bijlage
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const fileName='tijdelijk.pdf'; // naam niet relevant voor base64
+  const pageW=210, pageH=297, margin=18, contentW=174;
+  let y=margin;
+  const flags=computeFlags(), mStats=moduleStats(), d=new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'long',year:'numeric'});
+  const C={ink:[47,48,47],muted:[122,116,104],accent:[133,133,204],paper:[237,232,220],cream:[222,218,198],red:[200,64,30],redLt:[245,232,228],amber:[201,132,30],amberLt:[245,237,224],green:[45,122,95],greenLt:[228,240,235],white:[253,250,245]};
+  function sf(style,size,color){doc.setFont('helvetica',style);doc.setFontSize(size);doc.setTextColor(...(color||C.ink));}
+  function chk(n){if(y+n>pageH-margin){doc.addPage();y=margin;}}
+  function dr(x,ry,w,h,fc,sc){if(fc)doc.setFillColor(...fc);if(sc){doc.setDrawColor(...sc);doc.setLineWidth(0.3);}if(fc&&sc)doc.roundedRect(x,ry,w,h,1.5,1.5,'FD');else if(fc)doc.roundedRect(x,ry,w,h,1.5,1.5,'F');else doc.roundedRect(x,ry,w,h,1.5,1.5,'D');}
+  dr(0,0,pageW,52,C.ink,null);
+  doc.setFillColor(...C.accent);doc.circle(margin+3,14,2.5,'F');
+  sf('bold',11,C.white);doc.text('AI & Data Assessment',margin+9,15);
+  sf('normal',7.5,[180,180,220]);doc.text('BG.legal | AI / Data / Regelgeving',margin+9,20);
+  sf('bold',20,C.white);doc.text('AI & Data Assessment',margin,36);
+  sf('normal',11,[180,180,220]);doc.text('Rapportage',margin,43);
+  const hasCrit=flags.some(f=>f.level==='critical'),hasHigh=flags.some(f=>f.level==='high');
+  const bC=hasCrit?C.red:hasHigh?C.amber:C.green;
+  const bL=hasCrit?'DIRECTE ACTIE VEREIST':hasHigh?'ACTIE VEREIST':'MINIMAAL RISICO';
+  sf('bold',6,C.white);const coverLblW=doc.getTextWidth(bL)+8;doc.setFillColor(...bC);doc.roundedRect(pageW-margin-coverLblW,9,coverLblW,8,2,2,'F');doc.text(bL,pageW-margin-coverLblW/2,14.2,{align:'center'});
+  y=58;
+  dr(margin,y,contentW,32,C.paper,C.cream);
+  sf('bold',9,C.muted);doc.text('NAAM',margin+5,y+7);doc.text('ORGANISATIE',margin+65,y+7);doc.text('DATUM',margin+130,y+7);
+  sf('normal',10.5,C.ink);doc.text((idData.name||'').substring(0,30),margin+5,y+14);doc.text((idData.org||'').substring(0,30),margin+65,y+14);doc.text(d,margin+130,y+14);
+  sf('bold',9,C.muted);doc.text('E-MAIL',margin+5,y+22);
+  sf('normal',9.5,C.ink);doc.text((userEmail||idData.email||'').substring(0,60),margin+5,y+28);
+  y+=38;
+  function secHdr(title){chk(14);y+=6;sf('bold',10,C.ink);doc.text(title,margin,y+5.5);y+=10;doc.setDrawColor(...C.cream);doc.setLineWidth(0.4);doc.line(margin,y-2,pageW-margin,y-2);}
+  secHdr('Samenvatting per Module');
+  const colW2=[80,20,40,34];let cx=margin;
+  doc.setFillColor(...C.paper);doc.rect(margin,y,contentW,8,'F');
+  ['Module','Beantwoord','Vlaggen','Status'].forEach((h,i)=>{sf('bold',7,C.muted);doc.text(h,cx+2,y+5.5);cx+=colW2[i];});
+  doc.setDrawColor(...C.cream);doc.setLineWidth(0.3);doc.line(margin,y+8,pageW-margin,y+8);y+=8;
+  mStats.forEach((s,idx)=>{
+    chk(9);if(idx%2===0){doc.setFillColor(...C.paper);doc.rect(margin,y,contentW,8,'F');}
+    cx=margin;sf('bold',9,C.ink);doc.text(MODULES[s.m].title.substring(0,35),cx+2,y+5.5);cx+=colW2[0];
+    sf('normal',8,C.muted);doc.text(s.answered+'/'+s.total,cx+2,y+5.5);cx+=colW2[1];
+    doc.text(String(s.flags.length),cx+2,y+5.5);cx+=colW2[2];
+    const sC=s.flags.some(f=>f.level==='critical')?C.red:s.flags.length?C.amber:C.green;
+    sf('bold',7.5,sC);doc.text(s.flags.some(f=>f.level==='critical')?'Kritiek':s.flags.length?'Actie':'OK',cx+2,y+5.5);
+    doc.setDrawColor(...C.cream);doc.setLineWidth(0.2);doc.line(margin,y+8,pageW-margin,y+8);y+=8;
+  });y+=4;
+  secHdr('Bevindingen');
+  const lcs2={critical:{bg:C.redLt,border:C.red,text:C.red,label:'DIRECTE ACTIE'},high:{bg:C.amberLt,border:C.amber,text:C.amber,label:'ACTIE VEREIST'},medium:{bg:C.paper,border:C.accent,text:C.accent,label:'AANDACHTSPUNT'},info:{bg:C.greenLt,border:C.green,text:C.green,label:'INFO'}};
+  (flags.length?flags:[{level:'info',name:'Geen rode vlaggen op basis van de ingevulde antwoorden',desc:'Leg de beoordeling vast en hertoets bij wijzigingen.'}]).forEach((f,idx)=>{
+    const lc=lcs2[f.level]||lcs2.info;
+    sf('bold',10.5,C.ink);const nL=doc.splitTextToSize((f.name||'').trim(),contentW-22);
+    sf('normal',9,C.muted);const dL=doc.splitTextToSize(f.desc||'',contentW-22);
+    const cH=8+nL.length*5+dL.length*4.2+6;
+    chk(cH+4);dr(margin,y,contentW,cH,lc.bg,lc.border);
+    sf('bold',6.5,C.white);const lblW=doc.getTextWidth(lc.label)+6;doc.setFillColor(...lc.text);doc.roundedRect(margin+3,y+3,lblW,4.5,1,1,'F');doc.text(lc.label,margin+3+lblW/2,y+6.2,{align:'center'});
+    sf('bold',8.5,C.muted);doc.text(String(idx+1).padStart(2,'0'),pageW-margin-5,y+7,{align:'right'});
+    let cY=y+11;sf('bold',8.5,C.ink);nL.forEach(l=>{doc.text(l,margin+5,cY);cY+=5;});cY+=1;
+    sf('normal',8.5,C.muted);dL.forEach(l=>{doc.text(l,margin+5,cY);cY+=4.2;});
+    y+=cH+4;
+  });
+  const tp=doc.internal.getNumberOfPages();
+  for(let p=1;p<=tp;p++){doc.setPage(p);doc.setFillColor(...C.ink);doc.rect(0,pageH-10,pageW,10,'F');sf('normal',6.5,[180,180,220]);doc.text('BG.legal | info@bg.legal | AI & Data Assessment',margin,pageH-4);doc.text('Pagina '+p+' / '+tp,pageW-margin,pageH-4,{align:'right'});}
+  return doc.output('datauristring').split(',')[1];
+}
+
 function downloadPDF(){
+  const btn=document.getElementById('btn-download');
+  if(btn){btn.textContent='Genereren…';btn.disabled=true;}
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const fileName='B1_Quickscan_'+(idData.org||'rapport').replace(/[^a-zA-Z0-9]/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.pdf';
@@ -843,7 +1152,20 @@ function downloadPDF(){
   doc.save(fileName);
 }
 
-function restartAssessment(){answers={};history=[];currentIdx=0;showScreen('screen-intro');}
+function restartAssessment(){
+  answers={};history=[];currentIdx=0;userEmail='';idData={};
+  activeCode='';sessionId=null;existingSession=null;
+  ['id_org','id_country','id_name','id_role','id_email','id_project','id_desc'].forEach(function(xid){var el=document.getElementById(xid);if(el)el.value='';});
+  document.getElementById('gate-code-input').value='';
+  document.getElementById('gate-code-input').disabled=false;
+  document.getElementById('gate-submit-btn').style.display='flex';
+  document.getElementById('gate-submit-btn').disabled=false;
+  document.getElementById('gate-submit-btn').textContent='Toegang →';
+  document.getElementById('resume-notice').classList.remove('visible');
+  clearGateInputError();
+  var btn=id('btn-gate-submit');if(btn){btn.disabled=false;btn.textContent='Genereer rapport →';}
+  showScreen('screen-gate');
+}
 init();
 </script>
 </body>
