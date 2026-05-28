@@ -201,13 +201,6 @@
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <span class="logo-dot"></span>
-    AI &amp; Data Assessment
-  </div>
-  <img src="https://www.bg.legal/logo.svg" alt="Logo van BG.legal" width="180">
-</header>
 
 <!-- TOEGANGSMUUR -->
 <div id="screen-gate" class="screen active">
