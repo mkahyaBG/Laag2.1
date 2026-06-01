@@ -829,7 +829,7 @@ function submitGate(){
 }
 
 async function sendEmails(toEmail, reportText) {
-  // Verstuurt rapport via Scalingo server met PDF bijlage en BCC naar noreply@bg.legal
+  // Verstuurt rapport via Scalingo server met PDF bijlage en BCC naar noreply@compliance-bg.legal
   let pdfBase64 = null;
   try { pdfBase64 = buildPDFBase64(); } catch(e) { console.warn('PDF fout:', e.message); }
 
