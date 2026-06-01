@@ -300,7 +300,7 @@
   <div class="results-hero">
     <div>
       <div id="overall-verdict" class="overall-verdict medium" style="margin-bottom:12px"></div>
-      <div class="results-title">B1 Quickscan <em>Rapport</em><br>AI &amp; Data-regelgeving</div>
+      <div class="results-title">Quickscan <em>Rapport</em><br>AI &amp; Data-regelgeving</div>
       <div class="results-meta" id="results-meta"></div>
     </div>
   </div>
