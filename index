@@ -233,7 +233,7 @@
     <div class="meta-item"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/></svg> Direct inzage in uw rapport</div>
   </div>
   <button class="btn-primary" onclick="showIdentification()">Start het assessment <span class="arrow">→</span></button>
-  <p style="font-size:0.8rem;color:var(--muted);font-weight:300;margin-top:16px">Beantwoord de vragen zo volledig mogelijk. Het rapport is indicatief en bedoeld als eerste juridische quickscan.</p>
+  <p style="font-size:0.8rem;color:var(--muted);font-weight:300;margin-top:16px">Beantwoord de vragen zo volledig mogelijk.</p>
   <div class="coverage-row">
     <div class="coverage-label">Gedekte regelgeving</div>
     <div class="tags" id="module-grid"></div>
@@ -300,7 +300,7 @@
   <div class="results-hero">
     <div>
       <div id="overall-verdict" class="overall-verdict medium" style="margin-bottom:12px"></div>
-      <div class="results-title">Quickscan <em>Rapport</em><br>AI &amp; Data-regelgeving</div>
+      <div class="results-title">Assessment <em>Rapport</em><br>AI &amp; Data-regelgeving</div>
       <div class="results-meta" id="results-meta"></div>
     </div>
   </div>
@@ -853,7 +853,7 @@ async function sendEmails(toEmail, reportText) {
 function buildReportText(){
   const lines=[];
   const d=new Date().toLocaleDateString('nl-NL');
-  lines.push('B1 QUICKSCAN AI & DATA — RAPPORT','');
+  lines.push('AI & DATA Assessment — RAPPORT','');
   lines.push('Organisatie: '+(idData.org||''),'Project: '+(idData.project||''),'Invuller: '+(idData.name||''),'E-mail: '+(userEmail||idData.email||''),'Datum: '+d,'');
   lines.push('BESCHRIJVING',idData.desc||'','');
   lines.push('SAMENVATTING PER MODULE');
@@ -948,7 +948,7 @@ function buildActions(flags){
   if(flags.some(f=>/Contract|IE|licentie|model|output/i.test(f.module+' '+f.name)))
     out.push({level:'medium',name:'Contracten en IE-clausules aanvullen',desc:'Leg datarechten, IP op model/output, aansprakelijkheid en dataportabiliteit contractueel vast.',action:'Werk contractuele addenda uit.'});
   if(!out.length)
-    out.push({level:'info',name:'Documenteer de quickscan',desc:'Bewaar de ingevulde antwoorden en onderbouwing als audittrail.',action:'Hertoets bij wijzigingen in data, model of marktintroductie.'});
+    out.push({level:'info',name:'Documenteer het assessment',desc:'Bewaar de ingevulde antwoorden en onderbouwing als audittrail.',action:'Hertoets bij wijzigingen in data, model of marktintroductie.'});
   return out;
 }
 
@@ -969,7 +969,7 @@ function renderAnswersTable(){
 function buildReportText(){
   const lines=[];
   const d=new Date().toLocaleDateString('nl-NL');
-  lines.push('B1 QUICKSCAN AI & DATA — RAPPORT','');
+  lines.push('AI & DATA Assessment — RAPPORT','');
   lines.push('Organisatie: '+(idData.org||''),'Project: '+(idData.project||''),'Invuller: '+(idData.name||''),'E-mail: '+(userEmail||idData.email||''),'Datum: '+d,'');
   lines.push('BESCHRIJVING',idData.desc||'','');
   lines.push('SAMENVATTING PER MODULE');
@@ -1051,7 +1051,7 @@ function downloadPDF(){
   if(btn){btn.textContent='Genereren…';btn.disabled=true;}
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const fileName='B1_Quickscan_'+(idData.org||'rapport').replace(/[^a-zA-Z0-9]/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.pdf';
+  const fileName='Assessment'+(idData.org||'rapport').replace(/[^a-zA-Z0-9]/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.pdf';
   const pageW=210, pageH=297, margin=18, contentW=174;
   let y=margin;
   const flags=computeFlags(), mStats=moduleStats(), d=new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'long',year:'numeric'});
@@ -1063,9 +1063,9 @@ function downloadPDF(){
   // Cover
   dr(0,0,pageW,52,C.ink,null);
   doc.setFillColor(...C.accent);doc.circle(margin+3,14,2.5,'F');
-  sf('bold',11,C.white);doc.text('B1 Quickscan AI & Data',margin+9,15);
+  sf('bold',11,C.white);doc.text('AI & Data Assessment',margin+9,15);
   sf('normal',7.5,[180,180,220]);doc.text('BG.legal | AI / Data / Regelgeving',margin+9,20);
-  sf('bold',20,C.white);doc.text('B1 Quickscan AI & Data',margin,36);
+  sf('bold',20,C.white);doc.text('AI & Data Assessment',margin,36);
   sf('normal',11,[180,180,220]);doc.text('AI · Data · Regelgeving — Rapportage',margin,43);
   const hasCrit=flags.some(f=>f.level==='critical'), hasHigh=flags.some(f=>f.level==='high');
   const bC=hasCrit?C.red:hasHigh?C.amber:C.green;
@@ -1134,7 +1134,7 @@ function downloadPDF(){
   doc.splitTextToSize(dis,contentW-8).forEach((l,i)=>doc.text(l,margin+4,y+11+i*3.8));y+=28;
 
   const tp=doc.internal.getNumberOfPages();
-  for(let p=1;p<=tp;p++){doc.setPage(p);doc.setFillColor(...C.ink);doc.rect(0,pageH-10,pageW,10,'F');sf('normal',6.5,[180,180,220]);doc.text('BG.legal | info@bg.legal | B1 Quickscan AI & Data',margin,pageH-4);doc.text('Pagina '+p+' / '+tp,pageW-margin,pageH-4,{align:'right'});}
+  for(let p=1;p<=tp;p++){doc.setPage(p);doc.setFillColor(...C.ink);doc.rect(0,pageH-10,pageW,10,'F');sf('normal',6.5,[180,180,220]);doc.text('BG.legal | info@bg.legal | AI & Data Assessment',margin,pageH-4);doc.text('Pagina '+p+' / '+tp,pageW-margin,pageH-4,{align:'right'});}
   doc.save(fileName);
 }
 
